@@ -66,7 +66,7 @@ class Server:
 
         # estimating the next page
         if (page < total_pages):
-            next_page = page+1
+            next_page = page + 1
         else:
             next_page = None
 
@@ -80,5 +80,6 @@ class Server:
                 'page': page,
                 'data': data,
                 'next_page': next_page,
-                'prev_page': prev_page
+                'prev_page': prev_page,
+                'total_pages': total_pages
                 }
