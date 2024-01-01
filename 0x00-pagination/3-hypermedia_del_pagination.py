@@ -42,7 +42,7 @@ class Server:
         return self.__indexed_dataset
 
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
-        """"""
+        """Get Method"""
         index_dataset = self.indexed_dataset()
 
         assert isinstance(index, int) and index < (len(index_dataset) - 1)
@@ -54,8 +54,8 @@ class Server:
             value = index_dataset.get(mv, None)
             if value:
                 data.append(value)
-                i++
-            mv++
+                i += 1
+            mv += 1
 
         next_index = None
         while (mv < len(index_dataset)):
@@ -63,7 +63,7 @@ class Server:
             if value:
                 next_index = mv
                 break
-            mv++
+            mv += 1
 
         hyper = {
             'index': index,
