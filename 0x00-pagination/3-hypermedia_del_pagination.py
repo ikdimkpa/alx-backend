@@ -37,7 +37,39 @@ class Server:
             truncated_dataset = dataset[:1000]
             self.__indexed_dataset = {
                i: dataset[i] for i in range(len(dataset))
-            }                                                                                                                                                                                                                           return self.__indexed_dataset
+            }
+
+        return self.__indexed_dataset
 
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
-        pass
+        """"""
+        index_dataset = self.indexed_dataset()
+
+        assert isinstance(index, int) and index < (len(index_dataset) - 1)
+
+        i = 0
+        mv = index
+        data = []
+        while (i < page_size and index < len(index_dataset)):
+            value = index_dataset.get(mv, None)
+            if value:
+                data.append(value)
+                i++
+            mv++
+
+        next_index = None
+        while (mv < len(index_dataset)):
+            value = index_dataset.get(mv, None)
+            if value:
+                next_index = mv
+                break
+            mv++
+
+        hyper = {
+            'index': index,
+            'next_index': next_index,
+            'page_size': page_size,
+            'data': data
+        }
+
+        return hyper

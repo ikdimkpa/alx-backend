@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
    Implement a get_hyper method that takes the same arguments (and defaults)
-   as get_page and returns a dictionary containing the following key-value pairs:
+   as get_page and returns a dictionary containing the following key-value
+   pairs:
 
    page_size: the length of the returned dataset page
    page: the current page number
@@ -19,13 +20,16 @@ def index_range(page: int, page_size: int) -> Tuple[int, int]:
     """takes two integer arguments page and page_size."""
     return ((page - 1) * page_size, page_size * page)
 
+
 class Server:
     """
        Server class to paginate a database of popular baby names.
     """
     DATA_FILE = "Popular_Baby_Names.csv"
+
     def __init__(self):
         self.__dataset = None
+
     def dataset(self) -> List[List]:
         """Cached dataset"""
         if self.__dataset is None:
@@ -38,7 +42,7 @@ class Server:
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         """A get method that returns a particular page"""
-        
+
         assert isinstance(page, int) and page > 0
         assert isinstance(page_size, int) and page_size > 0
 
