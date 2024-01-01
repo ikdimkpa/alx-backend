@@ -5,7 +5,7 @@ Deletion-resilient hypermedia pagination
 
 import csv
 import math
-from typing import List, Dict
+from typing import List
 
 
 class Server:
@@ -28,7 +28,7 @@ class Server:
                 dataset = [row for row in reader]
             self.__dataset = dataset[1:]
 
-        return self.__dataset
+            return self.__dataset
 
     def indexed_dataset(self) -> Dict[int, List]:
         """Dataset indexed by sorting position, starting at 0"""
@@ -36,19 +36,40 @@ class Server:
             dataset = self.dataset()
             truncated_dataset = dataset[:1000]
             self.__indexed_dataset = {
-                    i: dataset[i] for i in range(len(dataset))
+               i: dataset[i] for i in range(len(dataset))
             }
+
         return self.__indexed_dataset
 
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
-        """Implements deletion-resilient hypermedia pagination"""
-        assert 0 <= index < len(self.__dataset)
-        next_index = min(index + page_size, len(self.__dataset))
-        data = self.__dataset[index:next_index]
+        """Get Method"""
+        index_dataset = self.indexed_dataset()
 
-        return {
-                "index": index,
-                "data": data,
-                "page_size": page_size,
-                "next_index": next_index
+        assert isinstance(index, int) and index < (len(index_dataset) - 1)
+
+        i = 0
+        mv = index
+        data = []
+        while (i < page_size and index < len(index_dataset)):
+            value = index_dataset.get(mv, None)
+            if value:
+                data.append(value)
+                i += 1
+            mv += 1
+
+        next_index = None
+        while (mv < len(index_dataset)):
+            value = index_dataset.get(mv, None)
+            if value:
+                next_index = mv
+                break
+            mv += 1
+
+        hyper = {
+            'index': index,
+            'next_index': next_index,
+            'page_size': page_size,
+            'data': data
         }
+
+        return hyper
