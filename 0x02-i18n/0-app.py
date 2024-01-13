@@ -11,5 +11,5 @@ def index_page():
     """This function defines a route for the root URL ('/')"""
     return render_template('0-index.html')
 
-if __name__ == "__main__":
-    app.run()
+"""if __name__ == "__main__":
+    app.run()"""
